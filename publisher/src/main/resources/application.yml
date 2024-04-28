@@ -1,0 +1,23 @@
+logging:
+  pattern:
+    dateformat: MM-dd HH:mm:ss:SSS
+spring:
+  rabbitmq:
+    host: localhost # rabbitMQ的ip地址
+    port: 5672 # 端口
+    username: guest
+    password: guest
+    virtual-host: /
+    publisher-confirm-type: CORRELATED # 相关的 发布消息成功到交换器后会触发回调方法
+    # RabbitTemplateConfigurer代码是这么配置的
+    #   private boolean determineMandatoryFlag() {
+    #        Boolean mandatory = this.rabbitProperties.getTemplate().getMandatory();
+    #        return mandatory != null ? mandatory : this.rabbitProperties.isPublisherReturns();
+    #    }
+    publisher-returns: true # 开启发布回退配置  // 强制模式 template.mandatory优先级更高
+    template:
+      mandatory: true
+  application:
+    name: 'publisher'
+server:
+  port: 8888
